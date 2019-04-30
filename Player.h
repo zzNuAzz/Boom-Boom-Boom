@@ -47,10 +47,12 @@ protected:
 	enum direction {LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3} move_;
 	std::vector<Bomb*> *list_bomb_;
 
+	Charactors Charactor;
+
 	int max_bomb_;
 	int length_bomb_;
 	int speed_boost_;
-
+	int speed;
 	int placed_bomb_;
 
 	bool isDied_;
@@ -71,7 +73,7 @@ protected:
 class Player1 : public Player
 {
 public:
-	Player1(SDL_Renderer* des, std::vector<Bomb*> *list_bomb, std::string path);
+	Player1(SDL_Renderer* des, Charactors charactor, std::vector<Bomb*> *list_bomb);
 	~Player1();
 
 	void HandleInput(SDL_Event e);
@@ -82,7 +84,7 @@ private:
 class Player2 :public Player
 {
 public:
-	Player2(SDL_Renderer* des, std::vector<Bomb*> *list_bomb, std::string path);
+	Player2(SDL_Renderer* des, Charactors charactor, std::vector<Bomb*> *list_bomb);
 	~Player2();
 
 	void HandleInput(SDL_Event e);

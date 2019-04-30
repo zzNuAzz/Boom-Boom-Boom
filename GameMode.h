@@ -1,5 +1,5 @@
-#ifndef GAME_2_PLAYER_H
-#define GAME_2_PLAYER_H
+#ifndef GAME_MODE
+#define GAME_MODE
 
 #include "Object.h"
 #include "Map.h"
@@ -10,4 +10,4 @@
 void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOption& Option);
 
 
-#endif // !GAME_2_PLAYER_H
+#endif // !GAME_MODE

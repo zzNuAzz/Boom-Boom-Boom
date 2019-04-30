@@ -38,22 +38,22 @@ void Player::HandleInput(SDL_Event e)
 		switch (e.key.keysym.sym)
 		{
 		case SDLK_LEFT:
-			x_val_ = -(PLAYER_BASIC_SPEED + speed_boost_);
+			x_val_ = -(speed);
 			move_ = LEFT;
 			y_val_ = 0;
 			break;
 		case SDLK_RIGHT:
-			x_val_ = PLAYER_BASIC_SPEED + speed_boost_;
+			x_val_ = speed;
 			move_ = RIGHT;
 			y_val_ = 0;
 			break;
 		case SDLK_UP:
-			y_val_ = -(PLAYER_BASIC_SPEED + speed_boost_);
+			y_val_ = -(speed);
 			move_ = UP;
 			x_val_ = 0;
 			break;
 		case SDLK_DOWN:
-			y_val_ = PLAYER_BASIC_SPEED + speed_boost_;
+			y_val_ = speed;
 			move_ = DOWN;
 			x_val_ = 0;
 			break;
@@ -96,7 +96,7 @@ void Player::HandleObjectCollision(GameMap &MapData)
 		{
 			Rect_.y = (y2 - 1) * TILES_SIZE - (PLAYER_HIGHT - TILES_SIZE);
 			int smooth_move = 1;
-			while (smooth_move <= (is_inBomb_ ? 1 : PLAYER_BASIC_SPEED+speed_boost_) && Rect_.x % TILES_SIZE) // lam cho  player di sang ben phai
+			while (smooth_move <= (is_inBomb_ ? 1 : speed) && Rect_.x % TILES_SIZE) // lam cho  player di sang ben phai
 			{
 				Rect_.x++;
 				smooth_move++;
@@ -107,7 +107,7 @@ void Player::HandleObjectCollision(GameMap &MapData)
 			Rect_.y = (y2 - 1) * TILES_SIZE - (PLAYER_HIGHT - TILES_SIZE);
 			int smooth_move = 1;
 			{
-				while (smooth_move <= (is_inBomb_ ? 1 : PLAYER_BASIC_SPEED + speed_boost_) && Rect_.x % TILES_SIZE) //lam cho player di sang ben trai
+				while (smooth_move <= (is_inBomb_ ? 1 : speed) && Rect_.x % TILES_SIZE) //lam cho player di sang ben trai
 				{
 					Rect_.x--;
 					smooth_move++;
@@ -122,7 +122,7 @@ void Player::HandleObjectCollision(GameMap &MapData)
 			Rect_.y = (y1 + 1) * TILES_SIZE - (PLAYER_HIGHT - TILES_SIZE);
 			int smooth_move = 1;
 			{
-				while (smooth_move <= (is_inBomb_ ? 1 : PLAYER_BASIC_SPEED + speed_boost_) && Rect_.y % TILES_SIZE)
+				while (smooth_move <= (is_inBomb_ ? 1 : speed) && Rect_.y % TILES_SIZE)
 				{
 					Rect_.x++;
 					smooth_move++;
@@ -134,7 +134,7 @@ void Player::HandleObjectCollision(GameMap &MapData)
 			Rect_.y = (y1 + 1) * TILES_SIZE - (PLAYER_HIGHT - TILES_SIZE);
 			int smooth_move = 1;
 			{
-				while (smooth_move <= (is_inBomb_ ? 1 : PLAYER_BASIC_SPEED + speed_boost_) && Rect_.x % TILES_SIZE)
+				while (smooth_move <= (is_inBomb_ ? 1 : speed) && Rect_.x % TILES_SIZE)
 				{
 					Rect_.x--;
 					smooth_move++;
@@ -155,7 +155,7 @@ void Player::HandleObjectCollision(GameMap &MapData)
 			Rect_.x = (x2 - 1)*TILES_SIZE;
 			int smooth_move = 1;
 			{
-				while (smooth_move <= (is_inBomb_ ? 1 : PLAYER_BASIC_SPEED + speed_boost_) && (Rect_.y+ PLAYER_HIGHT) % TILES_SIZE)
+				while (smooth_move <= (is_inBomb_ ? 1 : speed) && (Rect_.y+ PLAYER_HIGHT) % TILES_SIZE)
 				{
 					Rect_.y++;
 					smooth_move++;
@@ -167,7 +167,7 @@ void Player::HandleObjectCollision(GameMap &MapData)
 			Rect_.x = (x2 - 1)*TILES_SIZE;
 			int smooth_move = 1;
 			{
-				while (smooth_move <= (is_inBomb_ ? 1 : PLAYER_BASIC_SPEED + speed_boost_) && (Rect_.y + PLAYER_HIGHT) % TILES_SIZE)
+				while (smooth_move <= (is_inBomb_ ? 1 : speed) && (Rect_.y + PLAYER_HIGHT) % TILES_SIZE)
 				{
 					Rect_.y--;
 					smooth_move++;
@@ -182,7 +182,7 @@ void Player::HandleObjectCollision(GameMap &MapData)
 			Rect_.x = (x1 + 1)*TILES_SIZE;
 			int smooth_move = 1;
 			{
-				while (smooth_move <= (is_inBomb_ ? 1 : PLAYER_BASIC_SPEED + speed_boost_) && (Rect_.y + PLAYER_HIGHT) % TILES_SIZE)
+				while (smooth_move <= (is_inBomb_ ? 1 : speed) && (Rect_.y + PLAYER_HIGHT) % TILES_SIZE)
 				{
 					Rect_.y++;
 					smooth_move++;
@@ -194,7 +194,7 @@ void Player::HandleObjectCollision(GameMap &MapData)
 			Rect_.x = (x1 + 1)*TILES_SIZE;
 			int smooth_move = 1;
 			{
-				while (smooth_move <= (is_inBomb_ ? 1 : PLAYER_BASIC_SPEED + speed_boost_) && (Rect_.y + PLAYER_HIGHT) % TILES_SIZE)
+				while (smooth_move <= (is_inBomb_ ? 1 : speed) && (Rect_.y + PLAYER_HIGHT) % TILES_SIZE)
 				{
 					Rect_.y--;
 					smooth_move++;
@@ -353,7 +353,7 @@ void Player::set_inBomb(const bool & inWater)
 
 void Player::set_max_bom_up()
 {
-	if (max_bomb_ < MAX_BOMB_PER_PLAYER)
+	if (max_bomb_ < Info[Charactor].Limit_Bomb)
 	{
 		max_bomb_++;
 	}
@@ -361,7 +361,7 @@ void Player::set_max_bom_up()
 
 void Player::set_length_bom_up()
 {
-	if (length_bomb_ < MAX_LENGTH_BOMB_PER_DIRECT)
+	if (length_bomb_ < Info[Charactor].Limit_Length)
 	{
 		length_bomb_++;
 	}
@@ -369,14 +369,14 @@ void Player::set_length_bom_up()
 
 void Player::set_speed_boost()
 {
-	if (speed_boost_ < MAX_SPEED_BOOST)
+	if (speed < Info[Charactor].Limit_Speed)
 	{
-		speed_boost_ += 1;
+		speed++;
 	}
 }
 
 
-Player1::Player1(SDL_Renderer * des, std::vector<Bomb*> *list_bomb, std::string path)
+Player1::Player1(SDL_Renderer* des, Charactors Charactor, std::vector<Bomb*> *list_bomb)
 {
 	x_val_ = 0;
 	y_val_ = 0;
@@ -384,15 +384,19 @@ Player1::Player1(SDL_Renderer * des, std::vector<Bomb*> *list_bomb, std::string 
 	isSetBoom_ = 0;
 	isDied_ = 0;
 	is_inBomb_ = 0;
-	length_bomb_ = 1;
-	max_bomb_ = 1;
-	speed_boost_ = 0;
+
+	this->Charactor = Charactor;
+	length_bomb_ = Info[Charactor].Start_Length;
+	max_bomb_ = Info[Charactor].Start_Bomb;
+	speed = Info[Charactor].Start_Speed;
+
 	placed_bomb_ = 0;
 	PlayerNo_ = PLAYER_1;
+
 	this->list_bomb_ = list_bomb;
 
 	bomb_path_ = "Bin//Images//bomb.png";
-	loadIMG(des, path);
+	loadIMG(des, Info[Charactor].path);
 	setSpriteClip();
 	this->Render_des = des;
 }
@@ -409,22 +413,22 @@ void Player1::HandleInput(SDL_Event e)
 		switch (e.key.keysym.sym)
 		{
 		case SDLK_a:
-			x_val_ -= (PLAYER_BASIC_SPEED + speed_boost_);
+			x_val_ = -(speed);
 			move_ = LEFT;
 			y_val_ = 0;
 			break;
 		case SDLK_d:
-			x_val_ += PLAYER_BASIC_SPEED + speed_boost_;
+			x_val_ = speed;
 			move_ = RIGHT;
 			y_val_ = 0;
 			break;
 		case SDLK_w:
-			y_val_ = -(PLAYER_BASIC_SPEED + speed_boost_);
+			y_val_ = -(speed);
 			move_ = UP;
 			x_val_ = 0;
 			break;
 		case SDLK_s:
-			y_val_ = PLAYER_BASIC_SPEED + speed_boost_;
+			y_val_ = speed;
 			move_ = DOWN;
 			x_val_ = 0;
 			break;
@@ -434,9 +438,9 @@ void Player1::HandleInput(SDL_Event e)
 	if (e.type == SDL_KEYUP)
 		switch (e.key.keysym.sym)
 		{
-		case SDLK_a: x_val_ += (PLAYER_BASIC_SPEED + speed_boost_);
+		case SDLK_a: x_val_ = 0;
 			break;
-		case SDLK_d: x_val_ -= (PLAYER_BASIC_SPEED + speed_boost_);
+		case SDLK_d: x_val_ = 0;
 			break;
 		case SDLK_w: y_val_ = 0;
 			break;
@@ -445,21 +449,24 @@ void Player1::HandleInput(SDL_Event e)
 		}
 }
 
-Player2::Player2(SDL_Renderer * des, std::vector<Bomb*> *list_bomb, std::string path)
+Player2::Player2(SDL_Renderer* des, Charactors Charactor, std::vector<Bomb*> *list_bomb)
 {
 	x_val_ = 0;
 	y_val_ = 0;
 	move_ = DOWN;
 	isSetBoom_ = 0;
-	length_bomb_ = 1;
-	max_bomb_ = 1;
-	speed_boost_ = 0;
 	placed_bomb_ = 0;
+
+	this->Charactor = Charactor;
+	length_bomb_ = Info[Charactor].Start_Length;
+	max_bomb_ = Info[Charactor].Start_Bomb;
+	speed = Info[Charactor].Start_Speed;
+
 	PlayerNo_ = PLAYER_2;
 	this->list_bomb_ = list_bomb;
 
 	bomb_path_ = "Bin//Images//bomb3.png";
-	loadIMG(des, path);
+	loadIMG(des, Info[Charactor].path);
 	setSpriteClip();
 	this->Render_des = des;
 }
@@ -475,22 +482,22 @@ void Player2::HandleInput(SDL_Event e)
 		switch (e.key.keysym.sym)
 		{
 		case SDLK_LEFT:
-			x_val_ = -(PLAYER_BASIC_SPEED + speed_boost_);
+			x_val_ = -(speed);
 			move_ = LEFT;
 			y_val_ = 0;
 			break;
 		case SDLK_RIGHT:
-			x_val_ = PLAYER_BASIC_SPEED + speed_boost_;
+			x_val_ = speed;
 			move_ = RIGHT;
 			y_val_ = 0;
 			break;
 		case SDLK_UP:
-			y_val_ = -(PLAYER_BASIC_SPEED + speed_boost_);
+			y_val_ = -(speed);
 			move_ = UP;
 			x_val_ = 0;
 			break;
 		case SDLK_DOWN:
-			y_val_ = PLAYER_BASIC_SPEED + speed_boost_;
+			y_val_ = speed;
 			move_ = DOWN;
 			x_val_ = 0;
 			break;

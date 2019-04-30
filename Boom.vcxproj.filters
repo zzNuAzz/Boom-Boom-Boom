@@ -4,9 +4,6 @@
     <ClCompile Include="Bomb.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Game2Player.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -25,6 +22,9 @@
     <ClCompile Include="Menu.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="GameMode.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bomb.h">
@@ -39,9 +39,6 @@
     <ClInclude Include="Object.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="Game2Player.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="ConstAndGlobalVar.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -49,6 +46,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMode.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

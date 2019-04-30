@@ -1,4 +1,4 @@
-#include "Game2Player.h"
+#include "GameMode.h"
 
 void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOption& Option)
 {
@@ -18,15 +18,15 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 	std::vector<Item*> list_item;
 
 
-	Player* RedBoomer = new Player1(gRenderer, &list_bomb, "Bin//Images//Yellowbebong.png");
-	RedBoomer->SetRect(750, 635);
-	RedBoomer->set_inBomb_Object("Bin//Images//Khokho_sacnuoc.png");
+	Player* Player_1 = new Player1(gRenderer, Option.Player[0], &list_bomb);
+	
+	Player_1->set_inBomb_Object("Bin//Images//BeBong_sacnuoc.png");
+	Player_1->SetRect(100, 85);
+	Player* Player_2 = new Player2(gRenderer,Option.Player[1], &list_bomb);
+	 Player_2->SetRect(750, 635);
 
-	Player* GreenBoomer = new Player2(gRenderer, &list_bomb, "Bin//Images//RedBoomer.png");
-	GreenBoomer->SetRect(100, 85);
 
-
-	GreenBoomer->set_inBomb_Object("Bin//Images//Khokho_sacnuoc.png");
+	Player_2->set_inBomb_Object("Bin//Images//Khokho_sacnuoc.png");
 	//Object Player::inBomb
 
 	std::vector<Item_Image*> *ItemImage = new std::vector<Item_Image*>;
@@ -53,19 +53,19 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 			if (Events.type == SDL_QUIT || Events.key.keysym.sym == SDLK_ESCAPE) {
 				running = 0;
 			}
-			RedBoomer->HandleInput(Events);
-			GreenBoomer->HandleInput(Events);
+			Player_1->HandleInput(Events);
+			Player_2->HandleInput(Events);
 		}
 		//Update
 
-		RedBoomer->Update(gameMap);
-		GreenBoomer->Update(gameMap);
+		Player_1->Update(gameMap);
+		Player_2->Update(gameMap);
 
 		ifor(list_item.size())
-			list_item[i]->Update(&list_item, gameMap, RedBoomer, GreenBoomer);
+			list_item[i]->Update(&list_item, gameMap, Player_1, Player_2);
 
 		bool isRenderBombBang = 0;
-		bomb_Update(gameMap, &list_bomb, &list_item, BangMid, BangLeft, BangRight, BangUp, BangDown, RedBoomer, GreenBoomer, isRenderBombBang);
+		bomb_Update(gameMap, &list_bomb, &list_item, BangMid, BangLeft, BangRight, BangUp, BangDown, Player_1, Player_2, isRenderBombBang);
 		if (isRenderBombBang)
 		{
 			SDL_RenderPresent(gRenderer);
@@ -81,8 +81,8 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 			list_bomb[i]->Render();
 
 		// Boomer
-		RedBoomer->Render();
-		GreenBoomer->Render();
+		Player_1->Render();
+		Player_2->Render();
 		// Item
 		ifor((int)list_item.size())
 			list_item[i]->Render();
@@ -91,19 +91,19 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 		//FPS
 		SDL_Delay(20);
 		//console
-		if (RedBoomer->isDied() || GreenBoomer->isDied())
+		if (Player_1->isDied() || Player_2->isDied())
 		{
 			std::string notification = "";
-			if (RedBoomer->isDied()) notification += "Player1 died\n";
-			if (GreenBoomer->isDied())notification += "Player2 died\n";
+			if (Player_1->isDied()) notification += "Player1 died\n";
+			if (Player_2->isDied())notification += "Player2 died\n";
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Noti", notification.c_str(), gWindow);
 			running = false;
 		}
 	}
-	delete RedBoomer;
-	RedBoomer = NULL;
-	delete GreenBoomer;
-	GreenBoomer = NULL;
+	delete Player_1;
+	Player_1 = NULL;
+	delete Player_2;
+	Player_2 = NULL;
 	delete ItemImage;
 	ItemImage = NULL;
 	ifor(list_bomb.size()) delete list_bomb[i];

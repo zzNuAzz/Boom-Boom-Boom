@@ -11,7 +11,7 @@ bool MenuCharator::Point_In_Character(const SDL_Point & mouse, const Charactors 
 
 Charactors MenuCharator::getMousePointTo(SDL_Point & mouse)
 {
-	if (Point_In_Character(mouse, MO_MANG)) return MO_MANG;
+	//if (Point_In_Character(mouse, MO_MANG)) return MO_MANG;
 	if (Point_In_Character(mouse, BE_BONG)) return BE_BONG;
 	if (Point_In_Character(mouse, KHO_KHO)) return KHO_KHO;
 	if (Point_In_Character(mouse, NHANH_NHAU)) return NHANH_NHAU;

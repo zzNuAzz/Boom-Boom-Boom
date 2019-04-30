@@ -1,4 +1,4 @@
-#include "Game2Player.h"
+#include "GameMode.h"
 #include "Menu.h"
 
 //Init SDL 
@@ -10,7 +10,7 @@ bool Init()
 		return 0;
 	}
 
-	gWindow = SDL_CreateWindow("Boom - Tuan Anh #K63-CACLC1", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, MENU_SCREEN_WIDTH, MENU_SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	gWindow = SDL_CreateWindow(TITLE_GAME.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, MENU_SCREEN_WIDTH, MENU_SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	if (gWindow == NULL)
 	{
 		std::cout << "Window could not be create! SDL_Error: " << SDL_GetError() << '\n';
@@ -53,6 +53,7 @@ int main(int argc, char **argv)
 	Object CharacterSelection(gRenderer, "Bin/Images/CharacterSelection.png");
 	Object Seletion(gRenderer, "Bin/Images/Selection.png");
 	Object PlayButton(gRenderer, "Bin/Images/PlayButton.png");
+	Object ArrowPlayer1(gRenderer, "Bin/Images/arrow_player.png");
 
 	PlayButton.SetRect(20, 300);
 	GameOption Option;
@@ -79,12 +80,16 @@ int main(int argc, char **argv)
 				}
 			}
 			else if (Screen == SelectionCharMenu) {
-				
-				}
 				if (Events.type == SDL_KEYDOWN) {
 					if (Events.key.keysym.sym == SDLK_RETURN) {
-						NewGame_2Player(gWindow, gRenderer, Option);
-						Screen = MainMenu;
+						if (Option.Player[0] != NONE && Option.Player[1] != NONE) {
+							NewGame_2Player(gWindow, gRenderer, Option); Option.Player[0] = NONE;
+							Option.Player[1] = NONE;
+							Screen = MainMenu;
+						}
+						else {
+							SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Information", "You must pick 2 charactors.", gWindow);
+						}
 					}
 				}
 				if (Events.type == SDL_MOUSEMOTION) {
@@ -98,21 +103,23 @@ int main(int argc, char **argv)
 					else if (Events.button.button == SDL_BUTTON_RIGHT && Mouse_Point_To != NONE && Option.Player[0] != Mouse_Point_To) {
 						Option.Player[1] = Mouse_Point_To;
 					}
+				}
 			}
 		}
-
 		if (Screen == MainMenu) {
 			Background.Render();
 			PlayButton.Render();
 		}
 		else if (Screen == SelectionCharMenu) {
 			CharacterSelection.Render(); 
+			
+			ifor(2) if (Option.Player[i] != NONE) {
+				Seletion.Render(MenuCharator::CharacterRect[Option.Player[i]], &MenuCharator::Character_Lock[Option.Player[i]]);
+				ArrowPlayer1.Render(MenuCharator::ArrowPick[Option.Player[i]], &MenuCharator::ArrowClip[i]);
+			}
 			if (Mouse_Point_To != NONE) {
 				if (Option.Player[0] != Mouse_Point_To && Option.Player[1] != Mouse_Point_To)
 					Seletion.Render(MenuCharator::CharacterRect[Mouse_Point_To], &MenuCharator::Character_Pick[Mouse_Point_To]);
-			}
-			ifor(2) if (Option.Player[i] != NONE) {
-				Seletion.Render(MenuCharator::CharacterRect[Option.Player[i]], &MenuCharator::Character_Lock[Option.Player[i]]);
 			}
 		}
 		SDL_RenderPresent(gRenderer);
