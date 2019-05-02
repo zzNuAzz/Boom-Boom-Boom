@@ -14,7 +14,13 @@ public:
 private:
 	bool isHardTiles_;
 };
-
+class ShadowTileMap : public Object
+{
+public:
+	ShadowTileMap();
+	~ShadowTileMap();
+	void Render();
+};
 
 
 class GameMap

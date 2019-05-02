@@ -31,6 +31,7 @@ bool Init()
 		std::cout << "SDL_image could not initialize! SDL_image Error: " <<  IMG_GetError() << '\n';
 		return 0;
 	}
+	srand(time(NULL));
 	return 1;
 }
 
@@ -53,7 +54,7 @@ int main(int argc, char **argv)
 	Object CharacterSelection(gRenderer, "Bin/Images/CharacterSelection.png");
 	Object Seletion(gRenderer, "Bin/Images/Selection.png");
 	Object PlayButton(gRenderer, "Bin/Images/PlayButton.png");
-	Object ArrowPlayer1(gRenderer, "Bin/Images/arrow_player.png");
+	Object ArrowPlayer(gRenderer, "Bin/Images/arrow_player.png");
 
 	PlayButton.SetRect(20, 300);
 	GameOption Option;
@@ -115,7 +116,7 @@ int main(int argc, char **argv)
 			
 			ifor(2) if (Option.Player[i] != NONE) {
 				Seletion.Render(MenuCharator::CharacterRect[Option.Player[i]], &MenuCharator::Character_Lock[Option.Player[i]]);
-				ArrowPlayer1.Render(MenuCharator::ArrowPick[Option.Player[i]], &MenuCharator::ArrowClip[i]);
+				ArrowPlayer.Render(MenuCharator::ArrowPick[Option.Player[i]], &MenuCharator::ArrowClip[i]);
 			}
 			if (Mouse_Point_To != NONE) {
 				if (Option.Player[0] != Mouse_Point_To && Option.Player[1] != Mouse_Point_To)

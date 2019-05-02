@@ -1,5 +1,4 @@
 #include "GameMode.h"
-
 void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOption& Option)
 {
 //window size and posiotion
@@ -11,23 +10,15 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 	Object BackGround(gRenderer, "Bin//Images//background.png");
 
 	GameMap gameMap(gRenderer);
-//	gameMap.LoadTiles();
 
 	std::vector<Bomb*> list_bomb;
-
 	std::vector<Item*> list_item;
 
 
 	Player* Player_1 = new Player1(gRenderer, Option.Player[0], &list_bomb);
-	
-	Player_1->set_inBomb_Object("Bin//Images//BeBong_sacnuoc.png");
 	Player_1->SetRect(100, 85);
-	Player* Player_2 = new Player2(gRenderer,Option.Player[1], &list_bomb);
-	 Player_2->SetRect(750, 635);
-
-
-	Player_2->set_inBomb_Object("Bin//Images//Khokho_sacnuoc.png");
-	//Object Player::inBomb
+	Player* Player_2 = new Player2(gRenderer, Option.Player[1], &list_bomb);
+	 Player_2->SetRect(700, 85);
 
 	std::vector<Item_Image*> *ItemImage = new std::vector<Item_Image*>;
 	ItemImage->resize(NUMBER_ITEM);
@@ -58,12 +49,12 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 		}
 		//Update
 
-		Player_1->Update(gameMap);
-		Player_2->Update(gameMap);
+		Player_1->Update(gameMap, Player_2);
+		Player_2->Update(gameMap, Player_1);
 
 		ifor(list_item.size())
 			list_item[i]->Update(&list_item, gameMap, Player_1, Player_2);
-
+		 
 		bool isRenderBombBang = 0;
 		bomb_Update(gameMap, &list_bomb, &list_item, BangMid, BangLeft, BangRight, BangUp, BangDown, Player_1, Player_2, isRenderBombBang);
 		if (isRenderBombBang)

@@ -9,13 +9,12 @@ class Player : public Object
 {
 public:
 	Player();
-	Player(SDL_Renderer *des, std::vector<Bomb*> *list_bomb);
 	~Player();
 
 	virtual void HandleInput(SDL_Event e); 
 	void HandleObjectCollision(GameMap &MapData); // xu li va cham voi cac vat the
-	void Update(GameMap &MapData); // Update vi tri nhan vat va goi cac ham xu li va cham
-	void SetBoom(GameMap &MapData);
+	void Update(GameMap &MapData, const Player* player); // Update vi tri nhan vat va goi cac ham xu li va cham
+	void PlaceBoom(GameMap &MapData);
 
 	void setSpriteClip();
 	void Render();
@@ -27,7 +26,6 @@ public:
 	bool isDied() const { return isDied_; }
 	int get_placed_bomb() const { return placed_bomb_; }
 	void set_placed_bomb_down() { placed_bomb_--; }
-	void set_inBomb_Object(std::string path);
 	bool is_inBomb() const { return is_inBomb_; }
 	void set_inBomb(const bool& inBomb);
 	//Collect Item
@@ -64,9 +62,8 @@ protected:
 	std::string bomb_path_;
 
 	std::vector<std::vector<SDL_Rect>> SpriteClip;
-	int frame_ = 0;
-	Object inBomb;
 	std::vector<SDL_Rect> Sprite_inBomb;
+	int frame_ = 0;
 	
 };
 

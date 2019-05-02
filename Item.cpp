@@ -103,7 +103,6 @@ void Item::Render()
 
 void RandomItemMap(GameMap & MapData, std::vector<Item*>* plist_item, std::vector<Item_Image*> *ItemImage)
 {
-	srand(0);
 	ijfor(MAP_ROW, MAP_COL)
 	{
 		if (i > 0 && i < MAP_ROW - 1 && j > 0 && j < MAP_COL - 1 && MapData.getMapStt(i, j) > 0 && !MapData.get_isHartTiles(MapData.getMapStt(i, j)))

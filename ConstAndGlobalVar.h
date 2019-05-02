@@ -86,10 +86,10 @@ const int IN_BOMB_SIZE = 65; // pixels
 };
  
  const CharatorInfo Info[4] = { /*          path        ,  Start (Bomb, length, speed), Limit (Bomb, length, speed)*/	
-								{"Bin/Images/BeBong.png",		  1,	 2,		4,				6,	  8,	8},
-								{"Bin/Images/KhoKho.png",		  1,	 1,		4,				7,	  7,	8},
-								{"Bin/Images/NhanhNhau.png",	  1,	 1,     6,			    6,    6,   10},
-								{"Bin/Images/ThitMo.png",		  2,     1,     4,              8,    6,    8} };
+								{"Bin/Images/Be Bong.png",		  1,	 2,		4,				6,	  8,	8},
+								{"Bin/Images/Kho Kho.png",		  1,	 1,		4,				7,	  7,	8},
+								{"Bin/Images/Nhanh Nhau.png",	  1,	 1,     6,			    6,    6,   10},
+								{"Bin/Images/Thit Mo.png",		  2,     1,     4,              8,    6,    8} };
 //item
 const int NUMBER_ITEM = 3;
 const int RATIO_APPEAR_ITEM = 0; // ti le xuat hien = 1 - ratio / soluongitem

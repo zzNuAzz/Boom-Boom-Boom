@@ -10,6 +10,20 @@ TilesMap::~TilesMap()
 	;
 }
 
+ShadowTileMap::ShadowTileMap()
+{
+}
+
+ShadowTileMap::~ShadowTileMap()
+{
+}
+
+void ShadowTileMap::Render()
+{
+	SDL_Rect RenderRect = { Rect_.x, Rect_.y - Rect_.h, Rect_.w, Rect_.h };
+	SDL_RenderCopy(Render_des, pObject_, NULL, &RenderRect);
+}
+
 
 GameMap::GameMap(SDL_Renderer* des)
 {
@@ -69,4 +83,3 @@ void GameMap::Render()
 			Tiles[MapStatus[i][j]].Render(mapRect[i][j]);
 		}
 }
-

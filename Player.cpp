@@ -2,28 +2,14 @@
 
 Player::Player()
 {
-	;
-}
-
-Player::Player(SDL_Renderer * des, std::vector<Bomb*> *list_bomb)
-{
 	x_val_ = 0;
 	y_val_ = 0;
 	move_ = DOWN;
-	isDied_ = false;
-	is_inBomb_ = false;
 	isSetBoom_ = 0;
-	length_bomb_ = 1;
-	max_bomb_ = 1;
-	speed_boost_ = 0;
+	isDied_ = 0;
+	is_inBomb_ = 0;
 	placed_bomb_ = 0;
-	PlayerNo_ = PLAYER_1;
-	this->list_bomb_ = list_bomb;
-
-	bomb_path_ = "Bin//Images//bomb3.png";
-	loadIMG(des, "Bin//Images//RedBoomer.png");
 	setSpriteClip();
-	this->Render_des = des;
 }
 
 Player::~Player()
@@ -33,7 +19,7 @@ Player::~Player()
 
 void Player::HandleInput(SDL_Event e)
 {
-//	if (isDied_) return;
+	if (isDied_) return;
 	if (e.type == SDL_KEYDOWN)
 		switch (e.key.keysym.sym)
 		{
@@ -96,7 +82,7 @@ void Player::HandleObjectCollision(GameMap &MapData)
 		{
 			Rect_.y = (y2 - 1) * TILES_SIZE - (PLAYER_HIGHT - TILES_SIZE);
 			int smooth_move = 1;
-			while (smooth_move <= (is_inBomb_ ? 1 : speed) && Rect_.x % TILES_SIZE) // lam cho  player di sang ben phai
+			while (smooth_move <= (is_inBomb_ ? 1 : speed) && Rect_.x % TILES_SIZE) // lam cho  other_player di sang ben phai
 			{
 				Rect_.x++;
 				smooth_move++;
@@ -107,7 +93,7 @@ void Player::HandleObjectCollision(GameMap &MapData)
 			Rect_.y = (y2 - 1) * TILES_SIZE - (PLAYER_HIGHT - TILES_SIZE);
 			int smooth_move = 1;
 			{
-				while (smooth_move <= (is_inBomb_ ? 1 : speed) && Rect_.x % TILES_SIZE) //lam cho player di sang ben trai
+				while (smooth_move <= (is_inBomb_ ? 1 : speed) && Rect_.x % TILES_SIZE) //lam cho other_player di sang ben trai
 				{
 					Rect_.x--;
 					smooth_move++;
@@ -204,14 +190,13 @@ void Player::HandleObjectCollision(GameMap &MapData)
 	}
 }
 
-void Player::Update(GameMap &MapData)
+void Player::Update(GameMap &MapData, const Player* other_player)
 {
 	//Update bomb
-	if (isSetBoom_) SetBoom(MapData);
+	if (isSetBoom_) PlaceBoom(MapData);
 
 
-	ifor(list_bomb_->size())
-	{
+	ifor(list_bomb_->size()) {
 		list_bomb_->at(i)->UpdateMapStt(MapData, pos_);
 	}
 	if(MapData.getMapStt(pos_.second, pos_.first) == PlayerNo_) MapData.setPlayerPos(pos_, NULL);
@@ -220,8 +205,7 @@ void Player::Update(GameMap &MapData)
 	MapData.setPlayerPos(pos_, PlayerNo_);
 
 	//Update move
-	if (!is_inBomb_)
-	{
+	if (!is_inBomb_) {
 		Rect_.x += x_val_;
 		Rect_.y += y_val_;
 	}
@@ -232,18 +216,17 @@ void Player::Update(GameMap &MapData)
 
 	HandleObjectCollision(MapData);
 
-	if (is_inBomb_)
-	{
-		if (TimeCountDown_ == 0) {
+	if (is_inBomb_) {
+		
+		if (TimeCountDown_ == 0 || pos_ == other_player->get_pos()) {
 			Die();
 			frame_ = 0;
 		}
 		else TimeCountDown_--;
 	}
-
 }
 
-void Player::SetBoom(GameMap &MapData)
+void Player::PlaceBoom(GameMap &MapData)
 {
 	isSetBoom_ = 0;
 	if (!(placed_bomb_ < max_bomb_) || is_inBomb_) return;
@@ -272,13 +255,15 @@ void Player::SetBoom(GameMap &MapData)
 void Player::setSpriteClip()
 {
 
-	SpriteClip.resize(Rect_.w / PLAYER_WIDTH);
-	Rect_.w = PLAYER_WIDTH;
-	Rect_.h = PLAYER_HIGHT;
-	ifor(4) 
-		SpriteClip[i].resize(SpriteClip.size());
-	ijfor(4, SpriteClip.size()) 
+	SpriteClip.resize(4);
+	ifor(4) SpriteClip[i].resize(5);
+	ijfor(4, 5) 
 		SpriteClip[i][j] = { j * PLAYER_WIDTH, i * PLAYER_HIGHT, PLAYER_WIDTH, PLAYER_HIGHT };
+
+	Sprite_inBomb.resize(SPRITE_CLIPS_IN_BOMB);
+	ijfor(2, 5) {
+		Sprite_inBomb[5 * i + j] = { j * IN_BOMB_SIZE, i*IN_BOMB_SIZE + 260, IN_BOMB_SIZE, IN_BOMB_SIZE };
+	}
 	
 
 	
@@ -286,11 +271,12 @@ void Player::setSpriteClip()
 
 void Player::Render()
 {
-	//Render player
+	//Render other_player
 	if (!isDied_)
 	{
 		if (!is_inBomb_)
 		{
+			set_Size(PLAYER_WIDTH, PLAYER_HIGHT);
 			if (x_val_ || y_val_)
 			{
 				frame_ %= 40;
@@ -302,45 +288,34 @@ void Player::Render()
 		}
 		else
 		{
+			set_Size(IN_BOMB_SIZE, IN_BOMB_SIZE);
 			//5 giai doan animation
 			if (TimeCountDown_ > PLAYER_IN_BOMB_COUNT_DOWN - FRAME_INBOM_STEP1)
 			{
-				inBomb.SetRect(Rect_.x, Rect_.y);
-				inBomb.Render(&Sprite_inBomb[(frame_++ / (FRAME_INBOM_STEP1 / 3)) % 3]);
+				
+				SDL_RenderCopy(Render_des, pObject_, &Sprite_inBomb[(frame_++ / (FRAME_INBOM_STEP1 / 3)) % 3], &Rect_);
 			}
 			else if (TimeCountDown_ > PLAYER_IN_BOMB_COUNT_DOWN - FRAME_INBOM_STEP2)
 			{
-				inBomb.SetRect(Rect_.x, Rect_.y);
-				inBomb.Render(&Sprite_inBomb[(frame_++ / 10) % 2 + 3]);
+				
+				SDL_RenderCopy(Render_des, pObject_, &Sprite_inBomb[(frame_++ / 10) % 2 + 3], &Rect_);
 			}
 			else if (TimeCountDown_ > PLAYER_IN_BOMB_COUNT_DOWN - FRAME_INBOM_STEP3)
 			{
-				inBomb.SetRect(Rect_.x, Rect_.y);
-				inBomb.Render(&Sprite_inBomb[(frame_++ / 10) % 2 + 5]);
+				
+				SDL_RenderCopy(Render_des, pObject_, &Sprite_inBomb[(frame_++ / 10) % 2 + 5], &Rect_);
 			}
 			else if (TimeCountDown_ > PLAYER_IN_BOMB_COUNT_DOWN - FRAME_INBOM_STEP4)
 			{
-				inBomb.SetRect(Rect_.x, Rect_.y);
-				inBomb.Render(&Sprite_inBomb[(frame_++ / 10) % 2 + 7]);
+				SDL_RenderCopy(Render_des, pObject_, &Sprite_inBomb[(frame_++ / 10) % 2 + 7], &Rect_);
 			}
 			else {
-				inBomb.SetRect(Rect_.x, Rect_.y);
-				inBomb.Render(&Sprite_inBomb[9]);
+				SDL_RenderCopy(Render_des, pObject_, &Sprite_inBomb[9], &Rect_);
 			}
 		}
 	}
 }
 
-void Player::set_inBomb_Object(std::string path)
-{
-	inBomb.loadIMG(Render_des, path);
-	//Set inBomb sprite clip
-	Sprite_inBomb.resize(SPRITE_CLIPS_IN_BOMB);
-	ijfor(2, 5) {
-		Sprite_inBomb[5 * i + j] = { j * IN_BOMB_SIZE, i*IN_BOMB_SIZE, IN_BOMB_SIZE, IN_BOMB_SIZE };
-	}
-	inBomb.set_Size(IN_BOMB_SIZE, IN_BOMB_SIZE);
-}
 
 void Player::set_inBomb(const bool & inWater)
 {
@@ -348,6 +323,7 @@ void Player::set_inBomb(const bool & inWater)
 	{
 		TimeCountDown_ = PLAYER_IN_BOMB_COUNT_DOWN;
 		is_inBomb_ = 1;
+		frame_ = 0;
 	}
 }
 
@@ -378,26 +354,23 @@ void Player::set_speed_boost()
 
 Player1::Player1(SDL_Renderer* des, Charactors Charactor, std::vector<Bomb*> *list_bomb)
 {
-	x_val_ = 0;
-	y_val_ = 0;
-	move_ = DOWN;
-	isSetBoom_ = 0;
-	isDied_ = 0;
-	is_inBomb_ = 0;
+	
 
 	this->Charactor = Charactor;
 	length_bomb_ = Info[Charactor].Start_Length;
 	max_bomb_ = Info[Charactor].Start_Bomb;
 	speed = Info[Charactor].Start_Speed;
 
-	placed_bomb_ = 0;
+	
 	PlayerNo_ = PLAYER_1;
 
 	this->list_bomb_ = list_bomb;
 
-	bomb_path_ = "Bin//Images//bomb.png";
+	bomb_path_ = "Bin/Images/bomb.png";
 	loadIMG(des, Info[Charactor].path);
-	setSpriteClip();
+	Rect_.w = PLAYER_WIDTH;
+	Rect_.h = PLAYER_HIGHT;
+
 	this->Render_des = des;
 }
 
@@ -451,11 +424,6 @@ void Player1::HandleInput(SDL_Event e)
 
 Player2::Player2(SDL_Renderer* des, Charactors Charactor, std::vector<Bomb*> *list_bomb)
 {
-	x_val_ = 0;
-	y_val_ = 0;
-	move_ = DOWN;
-	isSetBoom_ = 0;
-	placed_bomb_ = 0;
 
 	this->Charactor = Charactor;
 	length_bomb_ = Info[Charactor].Start_Length;
@@ -465,9 +433,11 @@ Player2::Player2(SDL_Renderer* des, Charactors Charactor, std::vector<Bomb*> *li
 	PlayerNo_ = PLAYER_2;
 	this->list_bomb_ = list_bomb;
 
-	bomb_path_ = "Bin//Images//bomb3.png";
+	bomb_path_ = "Bin/Images/bomb3.png";
 	loadIMG(des, Info[Charactor].path);
-	setSpriteClip();
+	Rect_.w = PLAYER_WIDTH;
+	Rect_.h = PLAYER_HIGHT;
+
 	this->Render_des = des;
 }
 
