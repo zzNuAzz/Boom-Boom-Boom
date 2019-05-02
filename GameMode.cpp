@@ -7,18 +7,16 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 	SDL_GetWindowPosition(gWindow, &screen_cordinate_x, &screen_cordinate_y);
 	SDL_SetWindowPosition(gWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 //Init Object
-	Object BackGround(gRenderer, "Bin//Images//background.png");
-
-	GameMap gameMap(gRenderer);
+	Object BackGround(gRenderer, "Bin/Images/background.png");
 
 	std::vector<Bomb*> list_bomb;
 	std::vector<Item*> list_item;
 
-
 	Player* Player_1 = new Player1(gRenderer, Option.Player[0], &list_bomb);
-	Player_1->SetRect(100, 85);
 	Player* Player_2 = new Player2(gRenderer, Option.Player[1], &list_bomb);
-	 Player_2->SetRect(700, 85);
+	std::vector<std::string> map_path = { "Bin/map/01.txt", "Bin/map/02.txt" };
+	int i = rand() % 2;
+	GameMap gameMap(gRenderer, map_path[i], Player_1, Player_2);
 
 	std::vector<Item_Image*> *ItemImage = new std::vector<Item_Image*>;
 	ItemImage->resize(NUMBER_ITEM);
@@ -77,6 +75,8 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 		// Item
 		ifor((int)list_item.size())
 			list_item[i]->Render();
+
+		gameMap.DrawShadow();
 
 		SDL_RenderPresent(gRenderer);
 		//FPS

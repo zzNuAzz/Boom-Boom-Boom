@@ -1,0 +1,27 @@
+4 7
+12 7
+03 04 04 04 04 04 04 04 04 04 04 04 04 04 04 04 05 
+10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 06 
+10 00 01 01 01 01 01 00 00 00 01 01 01 01 01 00 06 
+10 00 01 02 00 02 01 00 00 00 01 02 00 02 01 00 06 
+10 00 01 01 01 01 01 00 00 00 01 01 01 01 01 00 06 
+10 00 01 02 00 02 01 00 00 00 01 02 00 02 01 00 06 
+10 00 01 01 01 01 01 00 01 00 01 01 01 01 01 00 06 
+10 00 00 00 00 00 00 01 02 01 00 00 00 00 00 00 06 
+10 00 01 01 01 01 01 00 01 00 01 01 01 01 01 00 06 
+10 00 01 02 00 02 01 00 00 00 01 02 00 02 01 00 06 
+10 00 01 01 01 01 01 00 00 00 01 01 01 01 01 00 06 
+10 00 01 02 00 02 01 00 00 00 01 02 00 02 01 00 06 
+10 00 01 01 01 01 01 00 00 00 01 01 01 01 01 00 06 
+10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 06 
+09 08 08 08 08 08 08 08 08 08 08 08 08 08 08 08 07
+01Bin/Images/banhngot1.png:Bin/Images/shadow_banhngot1.png:
+02Bin/Images/banhngot2.png:Bin/Images/shadow_banhngot2.png:hard
+03bin\images\goctrentrai.png::hard
+04bin\images\vientren.png::hard
+05bin\images\goctrenphai.png::hard
+06bin\images\vienphai.png::hard
+07bin\images\gocduoiphai.png::hard
+08bin\images\vienduoi.png::hard
+09bin\images\gocduoitrai.png::hard
+010bin\images\vientrai.png::hard

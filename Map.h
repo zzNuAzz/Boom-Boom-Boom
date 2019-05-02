@@ -11,6 +11,7 @@ public:
 
 	void setHardTiles(const bool& isHard) { isHardTiles_ = isHard; }
 	bool isHardTiles() const { return isHardTiles_; }
+
 private:
 	bool isHardTiles_;
 };
@@ -20,17 +21,21 @@ public:
 	ShadowTileMap();
 	~ShadowTileMap();
 	void Render();
+	void setShadow() { shadow = 1; }
+private:
+	bool shadow;
 };
 
-
+class Player;
 class GameMap
 {
 public:
-	GameMap(SDL_Renderer* des);
+	GameMap(SDL_Renderer* des, const std::string& path, Player* Player_1, Player* Player_2);
 	~GameMap();
-	void LoadTiles();
+	void Load();
 	void Render();
-	
+	void DrawShadow();
+
 	int getMapStt(const int& i, const int& j) const { return MapStatus[i][j]; }
 
 	void setPlayerPos(xy player_pos, const int& player_no) { MapStatus[player_pos.second][player_pos.first] = player_no; }
@@ -43,7 +48,9 @@ public:
 
 
 private:
+
 	TilesMap Tiles[NUMBER_TILES];
+	ShadowTileMap Shadow[NUMBER_TILES];
 	int MapStatus[MAP_ROW][MAP_COL];
 	SDL_Rect mapRect[MAP_ROW][MAP_COL];
 	SDL_Renderer* Render_des;

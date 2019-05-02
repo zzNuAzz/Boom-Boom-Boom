@@ -1,3 +1,5 @@
+2 2
+14 2
 05 06 06 06 06 06 06 06 06 06 06 06 06 06 06 06 07
 12 03 00 03 01 03 04 04 04 04 04 03 01 03 00 03 08
 12 00 00 00 01 01 04 02 02 02 04 01 01 00 00 00 08
@@ -13,3 +15,15 @@
 12 00 00 01 00 01 01 01 01 01 01 01 00 01 00 00 08
 12 00 03 01 03 01 03 01 03 01 03 01 03 01 03 00 08
 11 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 09
+01bin\images\cay1.png::
+02bin\images\goccay1.png:bin\images\shadow_goccay1.png:hard
+03bin\images\da1.png::hard
+04bin\images\nam2.png::
+05bin\images\goctrentrai.png::hard
+06bin\images\vientren.png::hard
+07bin\images\goctrenphai.png::hard
+08bin\images\vienphai.png::hard
+09bin\images\gocduoiphai.png::hard
+10bin\images\vienduoi.png::hard
+11bin\images\gocduoitrai.png::hard
+12bin\images\vientrai.png::hard

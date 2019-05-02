@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "Player.h"
 
 TilesMap::TilesMap()
 {
@@ -12,6 +13,7 @@ TilesMap::~TilesMap()
 
 ShadowTileMap::ShadowTileMap()
 {
+	shadow = 0;
 }
 
 ShadowTileMap::~ShadowTileMap()
@@ -20,19 +22,40 @@ ShadowTileMap::~ShadowTileMap()
 
 void ShadowTileMap::Render()
 {
+	if (!shadow) return;
 	SDL_Rect RenderRect = { Rect_.x, Rect_.y - Rect_.h, Rect_.w, Rect_.h };
 	SDL_RenderCopy(Render_des, pObject_, NULL, &RenderRect);
 }
 
 
-GameMap::GameMap(SDL_Renderer* des)
+GameMap::GameMap(SDL_Renderer* des, const std::string& path, Player* Player_1, Player* Player_2)
 {
 	this->Render_des = des;
-	std::ifstream map01("Bin//map//01.txt");
-	if (map01.is_open())
-		ijfor(MAP_ROW, MAP_COL) map01 >> MapStatus[i][j];
-	map01.close();
+	std::ifstream map(path);
+	if (map.is_open()) {
+		int x1, y1, x2, y2;
+		map >> x1 >> y1 >> x2 >> y2;
+		Player_1->SetRect(x1*TILES_SIZE, y1*TILES_SIZE - 15);
+		Player_2->SetRect(x2*TILES_SIZE, y2*TILES_SIZE - 15);
+		ijfor(MAP_ROW, MAP_COL) map >> MapStatus[i][j];
 
+		while (!map.eof()) {
+			int i;
+			std::string tile_path, shadow_path, state;
+			map >> i;
+			std::getline(map, tile_path, ':');
+			std::getline(map, shadow_path, ':');
+			std::getline(map, state);
+			Tiles[i].loadIMG(des, tile_path);
+			if (state == "hard") Tiles[i].setHardTiles(true);
+			if (shadow_path != "") {
+				Shadow[i].loadIMG(des, shadow_path);
+				Shadow[i].setShadow();
+			}
+		}
+
+		map.close();
+	}
 	ijfor(MAP_ROW, MAP_COL)
 	{
 		mapRect[i][j].y = i * TILES_SIZE;
@@ -40,40 +63,11 @@ GameMap::GameMap(SDL_Renderer* des)
 		mapRect[i][j].w = TILES_SIZE;
 		mapRect[i][j].h = TILES_SIZE;
 	}
-	LoadTiles();
 }
 
 GameMap::~GameMap()
 {
 	;
-}
-
-void GameMap::LoadTiles()
-{
-	Tiles[1].loadIMG(Render_des, "bin\\images\\cay1.png");
-	Tiles[2].loadIMG(Render_des, "bin\\images\\goccay1.png");
-	Tiles[3].loadIMG(Render_des, "bin\\images\\da1.png");
-	Tiles[4].loadIMG(Render_des, "bin\\images\\nam2.png");
-	Tiles[5].loadIMG(Render_des, "bin\\images\\goctrentrai.png");
-	Tiles[6].loadIMG(Render_des, "bin\\images\\vientren.png");
-	Tiles[7].loadIMG(Render_des, "bin\\images\\goctrenphai.png");
-	Tiles[8].loadIMG(Render_des, "bin\\images\\vienphai.png");
-	Tiles[9].loadIMG(Render_des, "bin\\images\\gocduoiphai.png");
-	Tiles[10].loadIMG(Render_des, "bin\\images\\vienduoi.png");
-	Tiles[11].loadIMG(Render_des, "bin\\images\\gocduoitrai.png");
-	Tiles[12].loadIMG(Render_des, "bin\\images\\vientrai.png");
-
-	Tiles[2].setHardTiles(true);
-	Tiles[3].setHardTiles(true);
-	Tiles[5].setHardTiles(true);
-	Tiles[6].setHardTiles(true);
-	Tiles[7].setHardTiles(true);
-	Tiles[8].setHardTiles(true);
-	Tiles[9].setHardTiles(true);
-	Tiles[10].setHardTiles(true);
-	Tiles[11].setHardTiles(true);
-	Tiles[12].setHardTiles(true);
-
 }
 
 void GameMap::Render()
@@ -83,3 +77,15 @@ void GameMap::Render()
 			Tiles[MapStatus[i][j]].Render(mapRect[i][j]);
 		}
 }
+
+void GameMap::DrawShadow()
+{
+	ijfor(MAP_ROW, MAP_COL) {
+		int k = MapStatus[i][j];
+		if (k > 0 && k < NUMBER_TILES) {
+			Shadow[k].SetRect(mapRect[i][j].x, mapRect[i][j].y);
+			Shadow[k].Render();
+		}
+	}
+}
+
