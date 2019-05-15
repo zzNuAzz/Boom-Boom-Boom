@@ -4,7 +4,7 @@
 #include "Object.h"
 #include "Map.h"
 #include "Bomb.h"
-
+#include "Sound.h"
 class Player : public Object 
 {
 public:

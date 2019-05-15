@@ -1,12 +1,18 @@
 #include "GameMode.h"
 #include "Menu.h"
+#include "Sound.h"
 
-//Init SDL 
+//Init SDL
+SDL_Window* gWindow = NULL;
+SDL_Renderer* gRenderer = NULL;
+SDL_Event Events;
+
 bool Init()
 {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	srand(time(NULL));
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
-		std::cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << '\n';
+		std::cout << "SDL  could not initialize! SDL_Error: " << SDL_GetError() << '\n';
 		return 0;
 	}
 
@@ -31,7 +37,13 @@ bool Init()
 		std::cout << "SDL_image could not initialize! SDL_image Error: " <<  IMG_GetError() << '\n';
 		return 0;
 	}
-	srand(time(NULL));
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+		return 0;
+	}
+	LoadSound();
 	return 1;
 }
 
@@ -43,6 +55,7 @@ void Close()
 	gRenderer = NULL;
 	SDL_Quit();
 	IMG_Quit();
+	Mix_Quit();
 }
 
 
@@ -62,15 +75,22 @@ int main(int argc, char **argv)
 	Screen = MainMenu; 
 	Charactors Mouse_Point_To = NONE;
 
-	bool running = 1;
+	Mix_FadeInMusic(Music_Background, -1, 2000);
+	bool running = 1; 
 	while (running) {
 		while (SDL_PollEvent(&Events)) {
 
 			if (Events.type == SDL_EventType::SDL_QUIT) {
 				running = 0;
 			}
+			//sound
+			if (Events.type == SDL_MOUSEBUTTONDOWN) {
+				Mix_PlayChannel(-1, Chunk_Touch, 0);
+			}
+			//HandleInput
 			if (Screen == MainMenu) {
 				if (Events.type == SDL_MOUSEBUTTONDOWN) {
+
 					SDL_Point mouse = { Events.button.x, Events.button.y};
 					SDL_Rect Rect = PlayButton.GetRect();
 					int offset = 35;
@@ -84,7 +104,10 @@ int main(int argc, char **argv)
 				if (Events.type == SDL_KEYDOWN) {
 					if (Events.key.keysym.sym == SDLK_RETURN) {
 						if (Option.Player[0] != NONE && Option.Player[1] != NONE) {
+
+							Mix_PlayMusic(Music_Start, 0);
 							NewGame_2Player(gWindow, gRenderer, Option); Option.Player[0] = NONE;
+							Mix_FadeInMusic(Music_Background, -1, 2000);
 							Option.Player[1] = NONE;
 							Screen = MainMenu;
 						}
@@ -127,8 +150,9 @@ int main(int argc, char **argv)
 		SDL_Delay(30);
 		SDL_RenderClear(gRenderer);
 	}
-	
+	Mix_PlayMusic(Music_Goodbye, 0);
+	SDL_Delay(850);
 	Close();
-
+	
 	return 0;
 }

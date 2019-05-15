@@ -72,8 +72,8 @@ void Player::HandleObjectCollision(GameMap &MapData)
 	*/
 
 	//horizontal - va cham theo chieu doc
-	int x1 = (Rect_.x + (Rect_.w - TILES_SIZE) / 2 - x_val_) / TILES_SIZE;
-	int x2 = (Rect_.x + (Rect_.w - TILES_SIZE) / 2 + PLAYER_WIDTH - 1 - x_val_) / TILES_SIZE;
+	int x1 = (Rect_.x + (Rect_.w - TILES_SIZE) / 2) / TILES_SIZE;
+	int x2 = (Rect_.x + (Rect_.w - TILES_SIZE) / 2 + PLAYER_WIDTH - 1) / TILES_SIZE;
 	int y1 = (Rect_.y + (PLAYER_HIGHT - TILES_SIZE)) / TILES_SIZE;
 	int y2 = (Rect_.y + PLAYER_HIGHT - 1) / TILES_SIZE;
 	if (y_val_ > 0) // di xuong
@@ -82,7 +82,7 @@ void Player::HandleObjectCollision(GameMap &MapData)
 		{
 			Rect_.y = (y2 - 1) * TILES_SIZE - (PLAYER_HIGHT - TILES_SIZE);
 			int smooth_move = 1;
-			while (smooth_move <= (is_inBomb_ ? 1 : speed) && Rect_.x % TILES_SIZE) // lam cho  other_player di sang ben phai
+			while (smooth_move <= (is_inBomb_ ? 1 : speed) && Rect_.x % TILES_SIZE) // lam cho  player di sang ben phai
 			{
 				Rect_.x++;
 				smooth_move++;
@@ -93,7 +93,7 @@ void Player::HandleObjectCollision(GameMap &MapData)
 			Rect_.y = (y2 - 1) * TILES_SIZE - (PLAYER_HIGHT - TILES_SIZE);
 			int smooth_move = 1;
 			{
-				while (smooth_move <= (is_inBomb_ ? 1 : speed) && Rect_.x % TILES_SIZE) //lam cho other_player di sang ben trai
+				while (smooth_move <= (is_inBomb_ ? 1 : speed) && Rect_.x % TILES_SIZE) //lam cho player di sang ben trai
 				{
 					Rect_.x--;
 					smooth_move++;
@@ -218,7 +218,7 @@ void Player::Update(GameMap &MapData, const Player* other_player)
 
 	if (is_inBomb_) {
 		
-		if (TimeCountDown_ == 0 || pos_ == other_player->get_pos()) {
+		if (TimeCountDown_ == 0 || (pos_ == other_player->get_pos() and !other_player->is_inBomb())) {
 			Die();
 			frame_ = 0;
 		}
@@ -249,6 +249,7 @@ void Player::PlaceBoom(GameMap &MapData)
 		newBomb->setPos(y, x);
 		newBomb->setLength_bang(length_bomb_);
 		list_bomb_->push_back(newBomb);
+		Mix_PlayChannel(-1, Chunk_SetBoom, 0);
 	}
 }
 
@@ -366,7 +367,7 @@ Player1::Player1(SDL_Renderer* des, Charactors Charactor, std::vector<Bomb*> *li
 
 	this->list_bomb_ = list_bomb;
 
-	bomb_path_ = "Bin/Images/bomb.png";
+	bomb_path_ = "Bin/Images/bomb3.png";
 	loadIMG(des, Info[Charactor].path);
 	Rect_.w = PLAYER_WIDTH;
 	Rect_.h = PLAYER_HIGHT;
@@ -411,13 +412,13 @@ void Player1::HandleInput(SDL_Event e)
 	if (e.type == SDL_KEYUP)
 		switch (e.key.keysym.sym)
 		{
-		case SDLK_a: x_val_ = 0;
+		case SDLK_a: if (x_val_ < 0) x_val_ = 0;
 			break;
-		case SDLK_d: x_val_ = 0;
+		case SDLK_d: if (x_val_ > 0) x_val_ = 0;
 			break;
-		case SDLK_w: y_val_ = 0;
+		case SDLK_w: if (y_val_ < 0) y_val_ = 0;
 			break;
-		case SDLK_s: y_val_ = 0;
+		case SDLK_s: if (y_val_ > 0)y_val_ = 0;
 			break;
 		}
 }
@@ -477,13 +478,13 @@ void Player2::HandleInput(SDL_Event e)
 	if (e.type == SDL_KEYUP)
 		switch (e.key.keysym.sym)
 		{
-		case SDLK_LEFT: x_val_ = 0;
+		case SDLK_LEFT: if (x_val_ < 0) x_val_ = 0;
 			break;
-		case SDLK_RIGHT: x_val_ = 0;
+		case SDLK_RIGHT: if (x_val_ > 0) x_val_ = 0;
 			break;
-		case SDLK_UP: y_val_ = 0;
+		case SDLK_UP: if (y_val_ < 0) y_val_ = 0;
 			break;
-		case SDLK_DOWN: y_val_ = 0;
+		case SDLK_DOWN: if (y_val_ > 0)y_val_ = 0;
 			break;
 		}
 }
