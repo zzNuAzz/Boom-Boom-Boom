@@ -1,0 +1,33 @@
+3 5
+13 5
+01 02 02 02 02 02 02 02 02 02 02 02 02 02 02 02 03
+08 00 00 14 10 00 00 14 00 14 00 00 11 14 00 00 04 
+08 00 09 00 14 10 09 00 14 00 09 11 14 00 09 00 04
+08 14 00 09 00 14 00 09 09 09 00 14 00 09 00 14 04
+08 10 14 00 09 00 09 00 00 00 09 00 09 00 14 11 04
+08 14 10 00 00 09 00 00 00 00 00 09 00 00 11 14 04
+08 00 14 00 09 00 00 00 00 00 00 00 09 00 14 00 04
+08 14 00 14 09 00 00 00 00 00 00 00 09 14 00 14 04
+08 00 14 00 09 00 00 00 00 00 00 00 09 00 14 00 04
+08 14 12 09 00 09 00 00 00 00 00 09 00 14 13 14 04
+08 12 14 00 09 00 09 00 00 00 09 00 09 00 14 13 04
+08 14 00 09 00 14 00 09 09 09 00 14 00 09 00 14 04
+08 00 09 00 14 12 09 00 14 00 09 13 14 00 09 00 04 
+08 00 00 14 12 14 00 14 00 14 00 14 13 14 00 00 04
+07 06 06 06 06 06 06 06 06 06 06 06 06 06 06 06 05
+bin/images/wood.png
+14
+01bin/images/goctrentrai.png::hard
+02bin/images/vientren.png::hard
+03bin/images/goctrenphai.png::hard
+04bin/images/vienphai.png::hard
+05bin/images/gocduoiphai.png::hard
+06bin/images/vienduoi.png::hard
+07bin/images/gocduoitrai.png::hard
+08bin/images/vientrai.png::hard
+09bin/images/box1.png:bin/images/shadow_box1.png:
+10bin/images/box2.png:bin/images/shadow_box2.png:hard
+11bin/images/box3.png:bin/images/shadow_box3.png:hard
+12bin/images/box4.png:bin/images/shadow_box4.png:hard
+13bin/images/box5.png:bin/images/shadow_box5.png:hard
+14bin/images/box6.png:bin/images/shadow_box6.png:

@@ -15,6 +15,8 @@
 12 00 00 01 00 01 01 01 01 01 01 01 00 01 00 00 08
 12 00 03 01 03 01 03 01 03 01 03 01 03 01 03 00 08
 11 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 09
+bin\images\grass.png
+12
 01bin\images\cay1.png::
 02bin\images\goccay1.png:bin\images\shadow_goccay1.png:hard
 03bin\images\da1.png::hard
