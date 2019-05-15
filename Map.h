@@ -30,9 +30,8 @@ class Player;
 class GameMap
 {
 public:
-	GameMap(SDL_Renderer* des, const std::string& path, Player* Player_1, Player* Player_2);
+	GameMap(SDL_Renderer* des, const std::string& path, std::string& Background_path, Player* Player_1, Player* Player_2);
 	~GameMap();
-	void Load();
 	void Render();
 	void DrawShadow();
 
@@ -48,9 +47,9 @@ public:
 
 
 private:
-
-	TilesMap Tiles[NUMBER_TILES];
-	ShadowTileMap Shadow[NUMBER_TILES];
+	int Number_tiles;
+	std::vector<TilesMap> Tiles;
+	std::vector<ShadowTileMap> Shadow;
 	int MapStatus[MAP_ROW][MAP_COL];
 	SDL_Rect mapRect[MAP_ROW][MAP_COL];
 	SDL_Renderer* Render_des;

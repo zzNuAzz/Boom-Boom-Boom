@@ -8,10 +8,22 @@ Item_Image::Item_Image()
 Item_Image::Item_Image(SDL_Renderer * des, std::string path)
 {
 	loadIMG(des, path);
+	frame_ = 0;
+	//set spriteClip
+	for (int i = 0; i < 4; i++) {
+		Sprite_clip[i] = { i * 50, 0, 50, 100 };
+	}
 }
 
 Item_Image::~Item_Image()
 {
+}
+
+void Item_Image::Render()
+{
+	SDL_Rect RenderRect = { Rect_.x, Rect_.y - 50, 50, 100 };
+	SDL_RenderCopy(Render_des, pObject_, &Sprite_clip[frame_++ / 10], &RenderRect);
+	if (frame_ >= 40) frame_ = 0;
 }
 
 
@@ -57,8 +69,9 @@ void Item::Update(std::vector<Item*>* plist_item, GameMap & MapData, Player * pl
 		isHide_ = 0;
 	}
 	if (isHide_ || !is_available_) return;
-	if (pos_ == player1->get_pos())
+	if (pos_ == player1->get_pos() && !player1->is_inBomb())
 	{
+		Mix_PlayChannel(-1, Chunk_Item, 0);
 		switch (type_item_)
 		{
 		case WATER_BALLON:
@@ -73,8 +86,9 @@ void Item::Update(std::vector<Item*>* plist_item, GameMap & MapData, Player * pl
 		}
 		is_available_ = 0;
 	}
-	else if (pos_ == player2->get_pos())
+	else if (pos_ == player2->get_pos() && !player2->is_inBomb())
 	{
+		Mix_PlayChannel(-1, Chunk_Item, 0);
 		switch (type_item_)
 		{
 		case WATER_BALLON:

@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+
 #include <SDL.h>
 #include <SDL_image.h>
 
@@ -21,6 +22,8 @@
 #define RED_SHOE 2 // ITEM tang toc nguoi choi
 
 
+
+
 //Character
 enum Charactors {
 	BE_BONG,
@@ -32,11 +35,6 @@ enum Charactors {
 
 typedef std::pair<int, int> xy;
 
-static SDL_Window* gWindow = NULL;
-static SDL_Renderer* gRenderer = NULL;
-
-static SDL_Event Events;
-
 const int RENDERER_DRAW_COLOR_R = 0xFF; //255	
 const int RENDERER_DRAW_COLOR_G = 0xFF; //255
 const int RENDERER_DRAW_COLOR_B = 0xFF; //255
@@ -44,7 +42,6 @@ const int RENDERER_DRAW_COLOR_A = 0xFF; //255
 
 const int MAP_ROW = 13 + 2; // so hang cua ban do + 2 hang vien
 const int MAP_COL = 15 + 2; // so cot cua ban do + 2 hang vien
-const int NUMBER_TILES = 13; // so luong vien gach + bom
 const int TILES_SIZE = 50; // pixels
 
 
@@ -61,12 +58,12 @@ const int SCREEN_HEIGHT = MAP_ROW * TILES_SIZE;
 const int PLAYER_WIDTH = 50;
 const int PLAYER_HIGHT = 65;
 
-const int PLAYER_BASIC_SPEED = 3; //pixels per frame
-const int MAX_SPEED_BOOST = 6;
-const int limit_bomb = 10;
-const int MAX_LENGTH_BOMB_PER_DIRECT = 6;
-const int TIME_BOMB_COUNT_DOWN = 150;
+//const int PLAYER_BASIC_SPEED = 3; //pixels per frame
+//const int MAX_SPEED_BOOST = 6;
+//const int limit_bomb = 10;
+//const int MAX_LENGTH_BOMB_PER_DIRECT = 6;
 
+const int TIME_BOMB_COUNT_DOWN = 150;
 const int SPRITE_CLIPS_IN_BOMB = 10;
 const int FRAME_INBOM_STEP1 = 18; // giai doan 1 frame 0->29, sprite 0->2
 const int FRAME_INBOM_STEP2 = 70; // giai doan 2 frame 30->69, sprite 3->4

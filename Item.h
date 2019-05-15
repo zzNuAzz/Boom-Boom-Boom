@@ -9,9 +9,11 @@ public:
 	Item_Image();
 	Item_Image(SDL_Renderer* des, std::string path);
 	~Item_Image();
+	void Render();
 
 private:
-
+	int frame_;
+	SDL_Rect Sprite_clip[4];
 };
 
 class Item 
