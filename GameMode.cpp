@@ -1,5 +1,6 @@
 #include "GameMode.h"
 #include "Sound.h"
+#include "Explosion.h"
 
 void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOption& Option)
 {
@@ -8,23 +9,21 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 	int screen_cordinate_x, screen_cordinate_y;
 	SDL_GetWindowPosition(gWindow, &screen_cordinate_x, &screen_cordinate_y);
 	SDL_SetWindowPosition(gWindow, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
-//Init Object
-	
 
+//Init Object
 	std::vector<Bomb*> list_bomb;
 	std::vector<Item*> list_item;
 
 	Player* Player_1 = new Player1(gRenderer, Option.Player[0], &list_bomb);
 	Player* Player_2 = new Player2(gRenderer, Option.Player[1], &list_bomb);
+
 	//map
 	std::vector<std::string> map_path = { "Bin/map/01.txt", "Bin/map/02.txt", "Bin/map/03.txt" };
-
 	int i = rand() % 3;
-
 	std::string Background_path;
 	GameMap gameMap(gRenderer, map_path[i], Background_path, Player_1, Player_2);
 	Object BackGround(gRenderer, Background_path);
-
+	//item
 	std::vector<Item_Image*> *ItemImage = new std::vector<Item_Image*>;
 	ItemImage->resize(NUMBER_ITEM);
 	ItemImage->at(WATER_BOTTLE) = new Item_Image(gRenderer, "Bin//Images//Bottle.png");
@@ -32,13 +31,7 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 	ItemImage->at(RED_SHOE) = new Item_Image(gRenderer, "Bin//Images//Shoe.png");
 
 	RandomItemMap(gameMap, &list_item, ItemImage);
-
-	//bomb bang
-	Object BangMid(gRenderer, "Bin//Images//BangMid.png");
-	Object BangLeft(gRenderer, "Bin//Images//BangLeft.png");
-	Object BangRight(gRenderer, "Bin//Images//BangRight.png");
-	Object BangUp(gRenderer, "Bin//Images//BangUp.png");
-	Object BangDown(gRenderer, "Bin//Images//BangDown.png");
+	LoadExplosion(gRenderer);
 
 	bool running = 1; bool soundGroundOpen = 0;
 
@@ -69,35 +62,42 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 			list_item[i]->Update(&list_item, gameMap, Player_1, Player_2);
 		 
 		bool isRenderBombBang = 0;
-		bomb_Update(gameMap, &list_bomb, &list_item, BangMid, BangLeft, BangRight, BangUp, BangDown, Player_1, Player_2, isRenderBombBang);
+		bomb_Update(gameMap, &list_bomb, &list_item, Player_1, Player_2, isRenderBombBang);
 		if (isRenderBombBang)
 		{
 			Mix_PlayChannel(-1, Chunk_Bang, 0);
-			SDL_RenderPresent(gRenderer);
-			SDL_Delay(50);
 		}
 		SDL_RenderClear(gRenderer);
 		//Render Object
-
 		BackGround.Render();
 		gameMap.Render();
 		// Bomb
 		ifor((int)list_bomb.size())
 			list_bomb[i]->Render();
 
+		ifor( ExplosionQueue.size()) {
+			if (ExplosionQueue[i] != NULL) {
+				ExplosionQueue[i]->Render();
+				if (ExplosionQueue[i]->Finished()) {
+					delete ExplosionQueue[i];
+					ExplosionQueue.erase(ExplosionQueue.begin() + i--);
+				}
+			}
+		}
 		// Boomer
 		Player_1->Render();
 		Player_2->Render();
 		// Item
 		ifor((int)list_item.size())
 			list_item[i]->Render();
-
 		gameMap.DrawShadow();
+
+
 
 		SDL_RenderPresent(gRenderer);
 		//FPS
 		SDL_Delay(20);
-		//console
+
 		if (Player_1->isDied() || Player_2->isDied())
 		{
 			std::string notification = "";
@@ -109,6 +109,7 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 			running = false;
 		}
 	}
+
 	delete Player_1;
 	Player_1 = NULL;
 	delete Player_2;
@@ -116,7 +117,11 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 	delete ItemImage;
 	ItemImage = NULL;
 	ifor(list_bomb.size()) delete list_bomb[i];
-	ifor(list_item.size()) delete list_item[i];
+	ifor(list_item.size()) delete list_item[i]; 
+	if (!ExplosionQueue.empty()) {
+		ifor( ExplosionQueue.size()) if (ExplosionQueue[i] != NULL) delete ExplosionQueue[i];
+		ExplosionQueue.clear();
+	}
 
 	SDL_SetWindowSize(gWindow, MENU_SCREEN_WIDTH, MENU_SCREEN_HEIGHT);
 	SDL_SetWindowPosition(gWindow, screen_cordinate_x, screen_cordinate_y);

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="main.cpp" />
@@ -32,6 +33,7 @@
   <ItemGroup>
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="ConstAndGlobalVar.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Map.h" />
