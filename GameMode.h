@@ -7,7 +7,7 @@
 #include "Item.h"
 #include "Menu.h"
 
-void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOption& Option);
+void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOption& Option, int* buttonid);
 
 
 #endif // !GAME_MODE

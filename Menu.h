@@ -2,6 +2,7 @@
 #define MENU_H
 #include "ConstAndGlobalVar.h"
 
+
 namespace MenuCharator {
 	const SDL_Rect  Character_Pick[4]  = {/* x,   y,   w,  h*/
 										 { 131,   0, 185, 278},
@@ -52,9 +53,32 @@ namespace MenuCharator {
 	bool Point_In_Character(const SDL_Point& mouse, const Charactors& Charactor);
 	Charactors getMousePointTo(SDL_Point &mouse);
 }
+namespace MapMenu {
+	const std::vector<std::string> map_path = { "Bin/map/01.txt", "Bin/map/02.txt", "Bin/map/03.txt", "Bin/map/04.txt" };
+	const SDL_Rect MAP_RECT[5] =  { {10,30,220,200},
+									{580,30,220,200},
+									{40,240,220,200},
+									{540,240,220,200},
+									{290,150,220,200} };
+	const SDL_Rect MAP_CLIP[2][5] = { { //InActive
+										{   0,   0, 220, 200} ,
+										{ 220,   0, 220, 200},
+										{ 440,   0, 220, 200},
+										{ 660,   0, 220, 200},
+										{ 880,   0, 220, 200} },
+										//Active
+									  { {   0, 200, 220, 200},
+										{ 220, 200, 220, 200},
+										{ 440, 200, 220, 200},
+										{ 660, 200, 220, 200}, 
+										{ 880, 200, 220, 200}} };
+}
 
 struct GameOption{
 	enum GameMode { TwoPlayer, KillEnemy} mode = TwoPlayer;
 	Charactors Player[2] = { NONE, NONE };
+	int map = 4;
+	std::string getMap() const;
 };
+void CallMenu(SDL_Window* gWindow, SDL_Renderer* gRenderer);
 #endif // !MENU_H

@@ -2,7 +2,7 @@
 #include "Sound.h"
 #include "Explosion.h"
 
-void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOption& Option)
+void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOption& Option, int* buttonid)
 {
 //window size and posiotion
 	SDL_SetWindowSize(gWindow, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -18,10 +18,8 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 	Player* Player_2 = new Player2(gRenderer, Option.Player[1], &list_bomb);
 
 	//map
-	std::vector<std::string> map_path = { "Bin/map/01.txt", "Bin/map/02.txt", "Bin/map/03.txt", "Bin/map/04.txt" };
-	int i = rand() % 4;
 	std::string Background_path;
-	GameMap gameMap(gRenderer, map_path[i], Background_path, Player_1, Player_2);
+	GameMap gameMap(gRenderer, Option.getMap(), Background_path, Player_1, Player_2);
 	Object BackGround(gRenderer, Background_path);
 	//item
 	std::vector<Item_Image*> *ItemImage = new std::vector<Item_Image*>;
@@ -49,6 +47,7 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 		{
 			if (Events.type == SDL_QUIT || Events.key.keysym.sym == SDLK_ESCAPE) {
 				running = 0;
+				*buttonid = 0;
 			}
 			Player_1->HandleInput(Events);
 			Player_2->HandleInput(Events);
@@ -85,8 +84,8 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 			}
 		}
 		// Boomer
-	//	Player_1->Render();
-	//	Player_2->Render();
+		Player_1->Render();
+		Player_2->Render();
 		// Item
 		ifor((int)list_item.size())
 			list_item[i]->Render();
@@ -101,11 +100,30 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 		if (Player_1->isDied() || Player_2->isDied())
 		{
 			std::string notification = "";
-			if (Player_1->isDied()) notification += "Player1 died\n";
-			if (Player_2->isDied()) notification += "Player2 died\n";
-			if (notification.size() > 15) Mix_PlayMusic(Music_Die, 0); // case ca 2 cung chet
+			if (Player_1->isDied()) notification += "Player 2 Win!!!";
+			if (Player_2->isDied()) notification += "Player 1 Win!!!";
+			if (notification.size() > 15) {
+				Mix_PlayMusic(Music_Die, 0); // case ca 2 cung chet
+				notification = "Draw!!!!!";
+			}
 			else Mix_PlayMusic(Music_Win, 0);
-			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Conguralation", notification.c_str(), gWindow);
+
+			SDL_MessageBoxButtonData buttons[] = {
+													{ SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT, 0, "Exit"},
+													{ /* .flags, .buttonid, .text */        0, 1, "Play Again" },
+													{ SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 2, "Menu" },
+												 };
+			SDL_MessageBoxData messageboxdata = {
+												SDL_MESSAGEBOX_INFORMATION, /* .flags */
+												gWindow, /* .window */
+												notification.c_str(), /* .title */
+												"Select a button", /* .message */
+												SDL_arraysize(buttons), /* .numbuttons */
+												buttons, /* .buttons */
+												NULL /* .colorScheme */
+			};
+			SDL_ShowMessageBox(&messageboxdata, buttonid);
+		//	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Conguralation", notification.c_str(), gWindow);
 			running = false;
 		}
 	}
