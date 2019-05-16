@@ -1,0 +1,30 @@
+02 05
+14 05
+01 02 02 02 02 02 02 02 02 02 02 02 02 02 02 02 03 
+04 10 10 10 10 00 00 00 10 00 00 00 10 10 10 10 08
+04 10 11 10 00 09 09 09 00 09 09 09 00 10 11 10 08 
+04 10 10 00 09 00 10 00 09 00 00 00 09 00 10 10 08 
+04 10 00 09 00 10 10 10 10 10 10 10 00 09 00 10 08
+04 10 00 09 10 10 10 10 10 10 10 10 10 09 00 10 08
+04 10 00 09 00 10 10 10 10 10 10 10 00 09 00 10 08 
+04 10 00 09 10 10 10 10 10 10 10 10 10 09 00 10 08 
+04 10 10 00 09 00 10 10 10 10 10 00 09 00 10 10 08
+04 10 10 10 00 09 10 10 10 10 10 09 00 10 10 10 08 
+04 10 10 10 10 00 09 00 10 00 09 00 10 10 10 10 08 
+04 10 10 00 10 10 00 09 09 09 00 10 10 00 10 10 08 
+04 10 11 00 10 10 10 00 00 00 10 10 10 00 11 10 08 
+04 10 00 00 10 10 10 10 10 10 10 10 10 00 00 10 08
+05 06 06 06 06 06 06 06 06 06 06 06 06 06 06 06 07
+bin/images/wood.png
+11
+01bin\images\goctrentrai.png::hard
+02bin\images\vientren.png::hard
+03bin\images\goctrenphai.png::hard
+04bin\images\vientrai.png::hard
+05bin\images\gocduoitrai.png::hard
+06bin\images\vienduoi.png::hard
+07bin\images\gocduoiphai.png::hard
+08bin\images\vienphai.png::hard
+09bin\images\box1.png:bin\images\shadow_box1.png:
+10bin\images\box6.png:bin\images\shadow_box6.png:
+11bin\images\column.png:bin\images\shadow_column.png:hard

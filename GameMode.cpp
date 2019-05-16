@@ -18,8 +18,8 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 	Player* Player_2 = new Player2(gRenderer, Option.Player[1], &list_bomb);
 
 	//map
-	std::vector<std::string> map_path = { "Bin/map/01.txt", "Bin/map/02.txt", "Bin/map/03.txt" };
-	int i = rand() % 3;
+	std::vector<std::string> map_path = { "Bin/map/01.txt", "Bin/map/02.txt", "Bin/map/03.txt", "Bin/map/04.txt" };
+	int i = rand() % 4;
 	std::string Background_path;
 	GameMap gameMap(gRenderer, map_path[i], Background_path, Player_1, Player_2);
 	Object BackGround(gRenderer, Background_path);
@@ -85,8 +85,8 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 			}
 		}
 		// Boomer
-		Player_1->Render();
-		Player_2->Render();
+	//	Player_1->Render();
+	//	Player_2->Render();
 		// Item
 		ifor((int)list_item.size())
 			list_item[i]->Render();
