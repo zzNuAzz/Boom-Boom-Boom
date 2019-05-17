@@ -43,11 +43,14 @@ void NewGame_2Player(SDL_Window* gWindow, SDL_Renderer* gRenderer, const GameOpt
 
 		//Handle Input
 		SDL_Event Events;
-		while (SDL_PollEvent(&Events))
-		{
-			if (Events.type == SDL_QUIT || Events.key.keysym.sym == SDLK_ESCAPE) {
+		while (SDL_PollEvent(&Events)) {
+			if (Events.type == SDL_QUIT) {
 				running = 0;
 				*buttonid = 0;
+			}
+			else if (Events.type == SDL_KEYDOWN && Events.key.keysym.sym == SDLK_ESCAPE) {
+				running = 0;
+				*buttonid = 2;
 			}
 			Player_1->HandleInput(Events);
 			Player_2->HandleInput(Events);

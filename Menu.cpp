@@ -84,10 +84,12 @@ void CallMenu(SDL_Window* gWindow, SDL_Renderer* gRenderer)
 				}
 				if (Events.type == SDL_MOUSEBUTTONDOWN) {
 					if (Events.button.button == SDL_BUTTON_LEFT && Mouse_Point_To != NONE && Option.Player[1] != Mouse_Point_To) {
-						Option.Player[0] = Mouse_Point_To;
+						if(Option.Player[0] != Mouse_Point_To) Option.Player[0] = Mouse_Point_To;
+						else Option.Player[0] = NONE;
 					}
 					else if (Events.button.button == SDL_BUTTON_RIGHT && Mouse_Point_To != NONE && Option.Player[0] != Mouse_Point_To) {
-						Option.Player[1] = Mouse_Point_To;
+						if (Option.Player[1] != Mouse_Point_To) Option.Player[1] = Mouse_Point_To;
+						else Option.Player[1] = NONE;
 					}
 				}
 			}
