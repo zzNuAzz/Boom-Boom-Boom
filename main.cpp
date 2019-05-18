@@ -63,6 +63,6 @@ int main(int argc, char **argv)
 	if (Init() == 0) return -1;
 	CallMenu(gWindow, gRenderer);
 	Close();
-	
+	  
 	return 0;
 }
